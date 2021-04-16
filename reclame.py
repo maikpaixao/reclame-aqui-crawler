@@ -2,19 +2,29 @@ import requests
 from bs4 import BeautifulSoup
 from selenium import webdriver
 
-#driver = webdriver.Chrome(executable_path='C:/Users/paixo/Desktop/crawler/chromedriver.exe')
-driver = webdriver.Firefox(executable_path='/home/maikpaixao/Downloads/geckodriver')
-driver.set_window_size(1120, 800)
+class ReclameAqui:
+  def __init__(self):
+    #self.driver = webdriver.Chrome(executable_path='C:/Users/paixo/Desktop/crawler/chromedriver.exe')
+    self.driver = webdriver.Firefox(executable_path='/home/maikpaixao/Downloads/geckodriver')
+    self.driver.set_window_size(1120, 800)
+    self.texts = []
 
-driver.get("https://www.reclameaqui.com.br/empresa/kanui/lista-reclamacoes/")
-#text = driver.find_element_by_class_name("text-title").text
-elements = driver.find_elements_by_css_selector("a.link-complain-id-complains")
-texts = [elem.get_attribute('href') for elem in elements]
+  def extract(self, url):
+    self.driver.get(url)
+    complains = self.driver.find_elements_by_css_selector("a.link-complain-id-complains")
+    complains_links = [complain.get_attribute('href') for complain in complains]
 
-for text in texts[:2]:
-  driver.get(text)
-  doc = driver.find_element_by_css_selector("div.complain-body p").text
-  print(doc)
-  #driver.close()
+    for link in complains_links[:2]:
+      self.driver.get(link)
+      text = self.driver.find_element_by_css_selector("div.complain-body p").text
+      self.texts.append(text)
 
-driver.close()
+    self.driver.close()
+
+if __name__ == '__main__':
+  crawler =  ReclameAqui()
+  crawler.extract("https://www.reclameaqui.com.br/empresa/kanui/lista-reclamacoes/")
+  
+  for text in crawler.texts:
+    print(text)
+    print('=======================================')
