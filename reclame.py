@@ -4,8 +4,7 @@ from selenium import webdriver
 
 class ReclameAqui:
   def __init__(self):
-    #self.driver = webdriver.Chrome(executable_path='C:/Users/paixo/Desktop/crawler/chromedriver.exe')
-    self.driver = webdriver.Firefox(executable_path='/home/maikpaixao/Downloads/geckodriver')
+    self.driver = webdriver.Firefox(executable_path='/home/maikpaixao/Downloads/geckodriver') #add your path
     self.driver.set_window_size(1120, 800)
     self.texts = []
 
@@ -27,4 +26,4 @@ if __name__ == '__main__':
   
   for text in crawler.texts:
     print(text)
-    print('=======================================')
+    print('==========')
